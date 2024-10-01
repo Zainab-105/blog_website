@@ -1,15 +1,19 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Admin Dashboard') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html>
+  <head> 
+   @include("admin.admincss")
+  </head>
+  <body>
+   @include('admin.header')
+    <div class="d-flex align-items-stretch">
+      <!-- Sidebar Navigation-->
+      @include('admin.sidebar')
+      <!-- Sidebar Navigation end-->
+      <div class="page-content">
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <x-welcome />
-            </div>
-        </div>
+
+      </div>
     </div>
-</x-app-layout>
+    @include('admin.footer')
+  </body>
+</html>
