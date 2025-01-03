@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserPostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +17,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home.homepage');
-});
+route::get('/',[AdminController::class,'homepage'])->name('index');
+Route::get('/blog/{id}', [AdminController::class, 'blog_detail'])->name('blog.detail');
 
 // Route::middleware([
 //     'auth:sanctum',
@@ -31,3 +31,4 @@ Route::get('/', function () {
 // });
 route::get('/home',[AdminController::class,'login'])->name('home');
 route::resource('posts',PostController::class);
+route::resource('user_post',UserPostController::class);

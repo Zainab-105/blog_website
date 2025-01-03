@@ -50,7 +50,7 @@
                   @endauth
            
           @endif</li>
-                
+          <li><a href="{{route('user_post.create')}}">Add Post</a></li>
              </ul>
           </div>
        </div>

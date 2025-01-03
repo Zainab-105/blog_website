@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Post;
+
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-class PostController extends Controller
+use App\Models\Post;
+class UserPostController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,6 @@ class PostController extends Controller
     {
         $posts = Post::all();
         return view('admin.posts', compact('posts')); 
-      
     }
 
     /**
@@ -25,7 +24,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('admin.add_post');
+      return view('home.create_post');
     }
 
     /**
@@ -36,24 +35,24 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-         'image' => 'required|image|max:2048|mimes:jpg,png,gif,jpeg',
+       $data=$request->validate([
+'title'=>'required',
+'description'=>'required',
+'image'=>'requird|image|mimes:jpg,png,gif,jpeg',
 
-        ]);
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imagename = time() . '_' . $image->getClientOriginalName();
-            $path = $image->storeAs('uploads', $imagename, 'public');
-            $data['image'] = $path;
-        }
-        $data['user_id']=auth()->user()->id;
-        $data['user_name']=auth()->user()->name;
-        $data['user_type']=auth()->user()->usertype;
-        $data['status']="active";
-        Post::create($data);
-        return redirect()->back();
+       ]);
+       if($request->hasFile('image')){
+        $image=$request->file('image');
+        $imagename=time().'_'.$image->getClientOriginalName();
+        $path=$image->storeAs('uploads',$imagename,'public');
+        $data['image']=$path;
+       }
+       $data['user_id']=auth()->user()->id;
+       $data['user_name']=auth()->user()->name;
+       $data['user_type']=auth()->user()->usertype;
+       $data['status']="active"; 
+       Post::create();
+       return redirect()->back();
     }
 
     /**
@@ -64,7 +63,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -76,7 +75,7 @@ class PostController extends Controller
     public function edit($id)
     {
         $post=Post::find($id);
-     return view('admin.edit_post',compact('post'));
+        return view('admin.edit_post',compact('post'));
     }
 
     /**
@@ -112,7 +111,6 @@ class PostController extends Controller
         // Redirect or return response as needed
         return redirect()->route('posts.index')->with('success', 'Post updated successfully');
     }
-    
 
     /**
      * Remove the specified resource from storage.
@@ -122,12 +120,12 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-      $post=Post::findOrFail($id);
-      $post->delete();
-      $imagepath=public_path('storage/'.$post->image);
-      if(file_exists($imagepath)){
-        @unlink($imagepath);
-      }
-      return redirect()->route('posts.index')->with('message',"post deleted successfully");
+        $post=Post::findOrFail($id);
+        $post->delete();
+        $imagepath=public_path('storage/'.$post->image);
+        if(file_exists($imagepath)){
+          @unlink($imagepath);
+        }
+        return redirect()->route('posts.index')->with('message',"post deleted successfully");
     }
 }

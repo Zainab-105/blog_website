@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\Post;
 class AdminController extends Controller
 {
     public function login()
@@ -25,7 +25,8 @@ class AdminController extends Controller
 
             // Redirect based on user type
             if ($usertype == 'user') {
-                return view('home.homepage');
+                $blogs=Post::take(6)->get();
+                return view('home.homepage',compact('blogs'));
             } elseif ($usertype == 'admin') {
                 return view('admin.index');
             } else {
@@ -35,5 +36,13 @@ class AdminController extends Controller
             // If authentication fails, return with error message
             return redirect()->back()->with('error', 'Invalid login credentials');
         }
+    }
+    public function homepage(){
+        $blogs=Post::all();
+        return view('home.homepage',compact('blogs'));
+    }
+    public function blog_detail($id){
+$blog=Post::find($id);
+return view('home.blog_detail',compact('blog'));
     }
 }
